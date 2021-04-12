@@ -4,13 +4,6 @@
 # Ask if tif and gt files are edited...abort if not.
 # Begin training.
 train () {
-	if [ -d ./data ]
-	then
-		echo -e "\n\tFound data directory ...\n"
-	else
-		echo -e "\n\tCreating data directory ...\n"
-	fi
-	
 	echo -e "All desired image and ground truth duo training files (*.tif, *.gt.txt) MUST be placed in the data directory."
 	read -p "Continue? [y/n] " response
 	[[ ${response} =~ ^[nN]$ ]] && exit
@@ -26,14 +19,37 @@ preprocess () {
 	echo "Preprocessing"
 }
 
-while getopts pt flag
+print_usage () {
+	echo "Usage: ./train_gt.sh [OPTION]..."
+	echo "Train Tesseract on image data using the 'tesstrain' repository and Make."
+	echo
+	echo "  -p		Run preprocessing files and scripts on image data."
+	echo "  -t		Begin training using tif/gt.txt file pairs.. (Uses ./data/<model-name>-ground-truth directory by default)"
+}
+
+# Options
+SHORT=hp:t:
+LONG=help,preprocess:,train:
+
+OPTS=$(getopt --options $SHORT --long $LONG --name "$0" -- "$@")
+
+if [ $? != 0 ] ; then echo -e "Failed to parse options ...\nAbort." >&2 ; exit 1 ; fi
+
+eval set -- "$OPTS"
+
+# Defaults
+PREPROCESS=./data
+
+while getopts hpt: flag
 do
 	case "${flag}" in
-		p) preprocess
-			;;
-		t) train
-			;;
-		*) echo -e "Invalid option: -$flag"
-			;;
+		h)
+			print_usage;;
+		p)
+			preprocess;;
+		t)
+			train ${OPTARG};;
+		*)
+			echo -e "Invalid option: -$flag";;
 	esac
 done
