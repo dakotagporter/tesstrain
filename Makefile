@@ -187,7 +187,7 @@ $(OUTPUT_DIR)/list.train: $(ALL_LSTMF)
 ifdef START_MODEL
 $(OUTPUT_DIR)/unicharset: $(ALL_GT)
 	@mkdir -p $(DATA_DIR)/$(START_MODEL)
-	combine_tessdata -u $(TESSDATA_PREFIX)/$(START_MODEL).traineddata  $(DATA_DIR)/$(START_MODEL)/$(MODEL_NAME)
+	combine_tessdata -u $(TESSDATA)/$(START_MODEL).traineddata  $(DATA_DIR)/$(START_MODEL)/$(MODEL_NAME)
 	unicharset_extractor --output_unicharset "$(OUTPUT_DIR)/my.unicharset" --norm_mode $(NORM_MODE) "$(ALL_GT)"
 	merge_unicharsets $(DATA_DIR)/$(START_MODEL)/$(MODEL_NAME).lstm-unicharset $(OUTPUT_DIR)/my.unicharset  "$@"
 else
