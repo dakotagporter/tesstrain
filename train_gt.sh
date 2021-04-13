@@ -4,7 +4,7 @@
 # Ask if tif and gt files are edited...abort if not.
 # Begin training.
 train () {
-	echo -e "All desired image and ground truth duo training files (*.tif, *.gt.txt) MUST be placed in the data directory."
+	echo -e "\nAll desired image and ground truth duo training files (*.tif, *.gt.txt) MUST be placed in the data/<model-name>-ground-truth directory."
 	read -p "Continue? [y/n] " response
 	[[ ${response} =~ ^[nN]$ ]] && exit
 	
@@ -12,44 +12,55 @@ train () {
 	echo
 	read -p "Enter the name of your model > " model_name
 	read -p "Enter the name of the model you wish to continue training from > " start_model
-	make training MODEL_NAME=${model_name} START_MODEL=${start_model} PSM=7 TESSDATA=`pwd`/tesseract/tessdata
+	read -p "Enter the desired segmentation mode > " psm
+	make training MODEL_NAME=${model_name} START_MODEL=${start_model} PSM=${psm} TESSDATA=`pwd`/tesseract/tessdata
 }
 
 preprocess () {
-	echo "Preprocessing"
+	echo "Preprocessing in `echo $1`"
 }
 
 print_usage () {
 	echo "Usage: ./train_gt.sh [OPTION]..."
 	echo "Train Tesseract on image data using the 'tesstrain' repository and Make."
 	echo
-	echo "  -p		Run preprocessing files and scripts on image data."
-	echo "  -t		Begin training using tif/gt.txt file pairs.. (Uses ./data/<model-name>-ground-truth directory by default)"
+	echo "  -h, --help			Display this help message."
+	echo "  -p, --preprocess <directory>	Run preprocessing files and scripts on image data. Default ./data"
+	echo "  -t, --train 			Begin training using tif/gt.txt file pairs."
 }
-
-# Options
-SHORT=hp:t:
-LONG=help,preprocess:,train:
-
-OPTS=$(getopt --options $SHORT --long $LONG --name "$0" -- "$@")
-
-if [ $? != 0 ] ; then echo -e "Failed to parse options ...\nAbort." >&2 ; exit 1 ; fi
-
-eval set -- "$OPTS"
 
 # Defaults
 PREPROCESS=./data
 
-while getopts hpt: flag
+
+while true;
 do
-	case "${flag}" in
-		h)
-			print_usage;;
-		p)
-			preprocess;;
-		t)
-			train ${OPTARG};;
-		*)
-			echo -e "Invalid option: -$flag";;
+	case "$1" in
+		-h | --help )
+			print_usage
+			shift
+			;;
+		-p | --preprocess )
+			shift
+			if [ -d "$1" ];
+			then
+				preprocess "$1"
+				shift
+			else
+				preprocess "$PREPROCESS"
+				shift
+			fi
+			;;
+		-t | --train )
+			train
+			shift
+			;;
+		-* )
+			echo -e "Invalid option!\nAbort."
+			exit 1
+			;;
+		* )
+			break
+			;;
 	esac
 done
