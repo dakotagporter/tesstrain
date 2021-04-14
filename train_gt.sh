@@ -32,6 +32,8 @@ print_usage () {
 # Defaults
 PREPROCESS=./data
 
+# Add defaults for train
+
 
 while true;
 do
