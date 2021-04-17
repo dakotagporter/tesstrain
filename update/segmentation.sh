@@ -1,7 +1,6 @@
 #!/bin/bash
 #SOURCE="./"
-lang=storysquadset
-#set -- **/*.png_bw
+lang=storysquadset ## rename
 find . -type f -name "*.png_bw.png" -exec sh -c '
     for img_file do
         echo  "\r\n File: $img_file"
