@@ -12,12 +12,12 @@ train () {
 }
 
 preprocess () {
-	data=./update/data
-	[ ! -d $data ] && { echo "ERROR: $data folder not found ..."; exit 1; }
+	cd ./update
+	[ ! -d ./data ] && { echo "ERROR: 'data' folder not found ..."; exit 1; }
 	
-	./update/conversion.sh
-	python3 ./update/preprocessing.py
-	./update/segmentation.sh
+	./conversion.sh
+	python3 processing.py
+	./segmentation.sh
 }
 
 print_usage () {
