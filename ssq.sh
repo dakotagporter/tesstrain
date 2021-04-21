@@ -4,7 +4,7 @@ train () {
 	read -p "Continue? [y/n] " response
 	[[ ${response} =~ ^[nN]$ ]] && exit 1
 	
-	echo
+	echo 
 	read -p "Enter a name to save your model to > " model_name
 	read -p "Enter the name of the model/checkpoint you wish to continue training from > " start_model
 	read -p "Enter the desired page segmentation mode > " psm
