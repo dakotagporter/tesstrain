@@ -277,7 +277,7 @@ $(LAST_CHECKPOINT): unicharset lists $(PROTO_MODEL)
 	lstmtraining \
 	  --debug_interval $(DEBUG_INTERVAL) \
 	  --traineddata $(PROTO_MODEL) \
-	  --old_traineddata $(TESSDATA_PREFIX)/$(START_MODEL).traineddata \
+	  --old_traineddata $(TESSDATA)/$(START_MODEL).traineddata \
 	  --continue_from $(DATA_DIR)/$(START_MODEL)/$(MODEL_NAME).lstm \
 	  --learning_rate $(LEARNING_RATE) \
 	  --model_output $(OUTPUT_DIR)/checkpoints/$(MODEL_NAME) \
