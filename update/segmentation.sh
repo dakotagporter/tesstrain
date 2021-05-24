@@ -15,5 +15,5 @@ find . -type f -name "*.png_bw.png" -exec sh -c '
 
 find . -type f -name '*.txt' -execdir rename 's/\.\/(.+)\.txt$/$1.gt.txt/' '{}' \;
 
-echo -e "\nImage files converted and processed. Correct the ground truth files and then run ./train_gt.sh -t to create training files."
+echo -e "\nImages converted and processed. Correct ground truth and box files. Run ./ssq.sh -t to begin training when finished."
 
