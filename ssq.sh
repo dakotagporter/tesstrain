@@ -18,10 +18,14 @@ preprocess () {
 	./conversion.sh
 	python3 processing.py
 	./segmentation.sh
+
+	mkdir -p ../data/ssq-ground-truth
+	mv ./data/*.tif ../data/ssq-ground-truth
+	mv ./data/*.gt.txt ../data/ssq-ground-truth
 }
 
 print_usage () {
-	echo "Usage: ./train_gt.sh [OPTION]..."
+	echo "Usage: ./ssq.sh [OPTION]..."
 	echo "Train Tesseract on image data using the 'tesstrain' repository and Make."
 	echo
 	echo "  -h, --help			Display this help message."
